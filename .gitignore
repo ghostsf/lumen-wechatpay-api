@@ -1,0 +1,6 @@
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+phpunit-6.2.4.phar
