@@ -23,6 +23,8 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__ . '/../')
 );
 
+$app->configure('wechat');
+
 $app->withFacades();
 
 $app->withEloquent();
@@ -98,5 +100,6 @@ $app->register(Overtrue\LaravelWechat\ServiceProvider::class);
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__ . '/../routes/web.php';
 });
+
 
 return $app;
