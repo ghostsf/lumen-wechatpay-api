@@ -24,6 +24,7 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->configure('wechat');
+$app->configure('session');
 
 $app->withFacades();
 
@@ -69,6 +70,14 @@ $app->singleton(
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
+$app->middleware([
+    Illuminate\Session\Middleware\StartSession::class
+]);
+
+$app->routeMiddleware([
+    'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -85,6 +94,7 @@ $app->singleton(
 // $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Overtrue\LaravelWechat\ServiceProvider::class);
+$app->register(Illuminate\Session\SessionServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

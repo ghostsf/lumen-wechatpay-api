@@ -112,18 +112,39 @@ class WePayController extends Controller
 
     public function notifyUrl()
     {
-        Log::info('notifyUrl');
+        Log::info('notify ...');
         $app = new Application(config('wechat'));
-        $response = $app->payment->handleNotify(function ($notify, $successful) {
+        $notice = $app->notice;
+        $response = $app->payment->handleNotify(function ($notify, $successful) use ($notice) {
             if ($successful) {
-                Log::info('回调成功');
-//                $order_arr = json_decode($notify, true);
-//                $order_guid = $order_arr['out_trade_no'];//订单号
-//                //回调成功的逻辑
-//                Log::info('回调成功 out_trade_no：' + $order_guid);
+                Log::info('回调成功 验证成功');
+
+                $order_arr = json_decode($notify, true);
+                $order_guid = $order_arr['out_trade_no'];//订单号
+                $result_code = $order_arr['result_code'];
+                if ($result_code == 'SUCCESS') {
+                    $first = '成功';
+                } else {
+                    $first = '失败';
+                }
+
+                //微信模板消息通知
+                $notice->send([
+                    'touser' => $order_arr['openid'],
+                    'template_id' => 'template-id',
+                    'url' => '',
+                    'data' => [
+                        "first" => "支付" . $first . "！",
+                        "keyword1" => $order_arr['attach'],
+                        "keyword2" => $order_arr['total_fee'],
+                        "keyword3" => $order_guid,
+                        "keyword4" => $order_arr['time_end'],
+                    ],
+                ]);
+
                 return true;
             }
-            Log::info('notifyUrl error');
+            Log::info('回调 支付失败');
             return false;
         });
         return $response;

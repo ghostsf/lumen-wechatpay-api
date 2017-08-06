@@ -15,14 +15,18 @@ $app->get('/', function () use ($app) {
     return "Hello ghostsf";
 });
 
-$app->get('demo', 'TestController@demo');
-
 $app->group(['prefix' => 'wepayapi/v1'], function ($app) {
     $app->post('createOrder4JSBridge', 'WePayController@createOrderJSBridge');
     $app->post('createOrder4JSSDK', 'WePayController@createOrderJSSDK');
     $app->post('createOrder4APP', 'WePayController@createOrderAPP');
 
     $app->post('notify', 'WePayController@notifyUrl');
-
-    $app->get('test', 'WePayController@test');
 });
+
+$app->get('demo', 'TestController@demo');
+$app->get('success', 'TestController@success');
+
+
+
+
+
