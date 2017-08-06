@@ -11,8 +11,16 @@
 <body>
 <div class="page">
     <div class="bd">
-        <div class="weui_cells_title">微信支付</div>
+        <div class="weui_cells_title">微信支付JSBridge-DEMO</div>
         <div class="weui_cells">
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">openid</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" id="openid" placeholder="请输入openid">
+                </div>
+            </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd">
                     <label class="weui_label">金额(￥)</label>
@@ -38,46 +46,10 @@
 </div>
 
 <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-
-<!-- layer -->
+{{--<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>--}}
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 
 <script type="text/javascript">
-    /* 微信支付 */
-    function wxpay() {
-        $.showLoading("正在加载...");
-        //测试时修改为自己的openId 如果不修改会出现【下单账号与支付账号不一致】的提示 这里最好授权获取
-        var openid = "o_pncsidC-pRRfCP4zj98h6slREw";
-        var fee = $("#fee").val();
-        var des = $("#des").val();
-
-        $.post("{{url('wepayapi/v1/createOrder4JSBridge')}}",
-                {
-                    openid: openid,
-                    fee: fee,
-                    des: des,
-                },
-                function (res) {
-                    $.hideLoading();
-                    if (res.error_code == 0) {
-                        var data = $.parseJSON(res.config);
-                        if (typeof WeixinJSBridge == "undefined") {
-                            if (document.addEventListener) {
-                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady(data), false);
-                            } else if (document.attachEvent) {
-                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady(data));
-                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady(data));
-                            }
-                        } else {
-                            onBridgeReady(data);
-                        }
-                    } else {
-                        layer.alert(res.error_desc);
-                    }
-                });
-    }
-
     function onBridgeReady(json) {
         WeixinJSBridge.invoke(
                 'getBrandWCPayRequest',
@@ -93,6 +65,36 @@
         );
     }
 
+    function wxpay() {
+        //测试时修改为自己的openId 如果不修改会出现【下单账号与支付账号不一致】的提示 这里最好授权获取
+        var openid = $("#openid").val();
+        var fee = $("#fee").val();
+        var des = $("#des").val();
+
+        $.post("{{url('wepayapi/v1/createOrder4JSBridge')}}",
+                {
+                    openid: openid,
+                    fee: fee,
+                    des: des
+                },
+                function (res) {
+                    if (res.error_code == 0) {
+                        var data = $.parseJSON(res.config);
+                        if (typeof WeixinJSBridge == "undefined") {
+                            if (document.addEventListener) {
+                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady(data), false);
+                            } else if (document.attachEvent) {
+                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady(data));
+                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady(data));
+                            }
+                        } else {
+                            onBridgeReady(data);
+                        }
+                    } else {
+                        alert(res.error_desc);
+                    }
+                });
+    }
 </script>
 </body>
 </html>

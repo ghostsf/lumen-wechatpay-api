@@ -40,6 +40,7 @@ class WePayController extends Controller
         $result = $payment->prepare($order);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
             $config = $payment->configForPayment($result->prepay_id);
+            Log::info('支付成功.. out_trade_no=' . $out_trade_no);
             return self::formatBody(['config' => $config, 'out_trade_no' => $out_trade_no]);
         } else {
             return $this->formatError('接口生成订单失败');
