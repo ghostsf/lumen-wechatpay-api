@@ -24,7 +24,7 @@
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary" style="text-align: left">
-                            <p>描述</p>
+                            <p>会员账号</p>
                         </div>
                         <div class="weui_cell_ft">{{$des}}</div>
                     </div>

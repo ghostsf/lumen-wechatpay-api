@@ -4,14 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>DEMO</title>
+    <title>微信充值</title>
     <link rel="stylesheet" href="res/weui.css">
     <link rel="stylesheet" href="res/example.css">
 </head>
 <body>
 <div class="page">
     <div class="bd">
-        <div class="weui_cells_title">微信支付JSBridge-DEMO</div>
+        <p>&nbsp;</p>
         <div class="weui_cells">
             <div class="weui_cell">
                 <div class="weui_cell_hd">
@@ -23,10 +23,10 @@
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd">
-                    <label class="weui_label">描述</label>
+                    <label class="weui_label">会员账号</label>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="text" id="des" placeholder="请描述">
+                    <input class="weui_input" type="text" id="des" placeholder="请输入会员账号">
                 </div>
             </div>
             <div class="weui_btn_area">

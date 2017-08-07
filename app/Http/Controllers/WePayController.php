@@ -121,31 +121,26 @@ class WePayController extends Controller
         $response = $app->payment->handleNotify(function ($notify, $successful) use ($notice) {
             if ($successful) {
                 Log::info('回调成功 验证成功');
-                Log::info('notify json'.$notify);
+                Log::info('notify json' . $notify);
                 $order_arr = json_decode($notify, true);
                 $order_guid = $order_arr['out_trade_no'];//订单号
                 $result_code = $order_arr['result_code'];
                 if ($result_code == 'SUCCESS') {
-                    $first = '您好，你已充值成功';
-                } else {
-                    $first = '很抱歉，充值失败';
+                    //微信模板消息通知
+                    $notice->send([
+                        'touser' => $order_arr['openid'],
+                        'template_id' => 'template_id',
+                        'url' => '',
+                        'data' => [
+                            "first" => '您好，你已充值成功',
+                            "keyword1" => $order_arr['attach'],
+                            "keyword2" => round($order_arr['total_fee'] / 100, 2) . '元',
+                            "keyword3" => $order_guid,
+                            "keyword4" => date('Y-m-d H:i:s',strtotime($order_arr['time_end'])),
+                            "remark" => '备注：如有疑问，请点击下方在线客服联系我们。',
+                        ],
+                    ]);
                 }
-
-                //微信模板消息通知
-                $notice->send([
-                    'touser' => $order_arr['openid'],
-                    'template_id' => 'template_id',//mP1fgijVN6FfF51Ju2feBKT8ZTO7GrGuhva0lbMXA3s
-                    'url' => '',
-                    'data' => [
-                        "first" => $first,
-                        "keyword1" => $order_arr['attach'],
-                        "keyword2" => $order_arr['total_fee'] / 100,
-                        "keyword3" => $order_guid,
-                        "keyword4" => $order_arr['time_end'],
-                        "remark" => '备注：如有疑问，请点击下方在线客服联系我们。',
-                    ],
-                ]);
-
                 return true;
             }
             Log::info('回调 支付失败');
