@@ -18,9 +18,9 @@
                 <div class="weui_cells">
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary" style="text-align: left">
-                            <p>金额(分)</p>
+                            <p>金额</p>
                         </div>
-                        <div class="weui_cell_ft">{{$fee}}</div>
+                        <div class="weui_cell_ft">{{$fee}}元</div>
                     </div>
                     <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary" style="text-align: left">

@@ -23,7 +23,7 @@ class WePayController extends Controller
         $app = new Application(config('wechat'));
         $payment = $app->payment;
         $openid = $request->input('openid');
-        $fee = $request->input('fee');
+        $fee = $request->input('fee') * 100;
         $des = $request->input('des');
         $out_trade_no = $request->input('out_trade_no');
         if ($out_trade_no == "") {
@@ -31,7 +31,8 @@ class WePayController extends Controller
         }
         $attributes = [
             'trade_type' => 'JSAPI', // JSAPI，NATIVE，APP...
-            'body' => $des,
+            'body' => '会员充值-描述（' . $des . '）',
+            'attach' => $des,
             'out_trade_no' => $out_trade_no,
             'total_fee' => $fee, // 单位：分
             'openid' => $openid, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
@@ -56,7 +57,7 @@ class WePayController extends Controller
         $app = new Application(config('wechat'));
         $payment = $app->payment;
         $openid = $request->input('openid');
-        $fee = $request->input('fee');
+        $fee = $request->input('fee') * 100;
         $des = $request->input('des');
         $out_trade_no = $request->input('out_trade_no');
         if ($out_trade_no == "") {
@@ -64,7 +65,8 @@ class WePayController extends Controller
         }
         $attributes = [
             'trade_type' => 'JSAPI', // JSAPI，NATIVE，APP...
-            'body' => $des,
+            'body' => '会员充值-描述（' . $des . '）',
+            'attach' => $des,
             'out_trade_no' => $out_trade_no,
             'total_fee' => $fee, // 单位：分
             'openid' => $openid, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
@@ -88,7 +90,7 @@ class WePayController extends Controller
     {
         $app = new Application(config('wechat'));
         $payment = $app->payment;
-        $fee = $request->input('fee');
+        $fee = $request->input('fee') * 100;
         $des = $request->input('des');
         $out_trade_no = $request->input('out_trade_no');
         if ($out_trade_no == "") {
@@ -96,7 +98,8 @@ class WePayController extends Controller
         }
         $attributes = [
             'trade_type' => 'APP', // JSAPI，NATIVE，APP...
-            'body' => $des,
+            'body' => '会员充值-描述（' . $des . '）',
+            'attach' => $des,
             'out_trade_no' => $out_trade_no,
             'total_fee' => $fee, // 单位：分
         ];
@@ -118,27 +121,28 @@ class WePayController extends Controller
         $response = $app->payment->handleNotify(function ($notify, $successful) use ($notice) {
             if ($successful) {
                 Log::info('回调成功 验证成功');
-
+                Log::info('notify json'.$notify);
                 $order_arr = json_decode($notify, true);
                 $order_guid = $order_arr['out_trade_no'];//订单号
                 $result_code = $order_arr['result_code'];
                 if ($result_code == 'SUCCESS') {
-                    $first = '成功';
+                    $first = '您好，你已充值成功';
                 } else {
-                    $first = '失败';
+                    $first = '很抱歉，充值失败';
                 }
 
                 //微信模板消息通知
                 $notice->send([
                     'touser' => $order_arr['openid'],
-                    'template_id' => 'template-id',
+                    'template_id' => 'template_id',//mP1fgijVN6FfF51Ju2feBKT8ZTO7GrGuhva0lbMXA3s
                     'url' => '',
                     'data' => [
-                        "first" => "支付" . $first . "！",
+                        "first" => $first,
                         "keyword1" => $order_arr['attach'],
-                        "keyword2" => $order_arr['total_fee'],
+                        "keyword2" => $order_arr['total_fee'] / 100,
                         "keyword3" => $order_guid,
                         "keyword4" => $order_arr['time_end'],
+                        "remark" => '备注：如有疑问，请点击下方在线客服联系我们。',
                     ],
                 ]);
 

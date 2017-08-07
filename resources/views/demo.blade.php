@@ -18,7 +18,7 @@
                     <label class="weui_label">金额(￥)</label>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="number" id="fee" placeholder="请输入数字金额,单位分">
+                    <input class="weui_input" type="number" id="fee" placeholder="请输入数字金额,单位元">
                 </div>
             </div>
             <div class="weui_cell">
