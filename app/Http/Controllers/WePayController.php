@@ -129,7 +129,7 @@ class WePayController extends Controller
                     //微信模板消息通知
                     $notice->send([
                         'touser' => $order_arr['openid'],
-                        'template_id' => 'template_id',
+                        'template_id' => 'mP1fgijVN6FfF51Ju2feBKT8ZTO7GrGuhva0lbMXA3s',
                         'url' => '',
                         'data' => [
                             "first" => '您好，你已充值成功',
