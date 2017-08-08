@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport"
           content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>DEMO - 支付成功</title>
+    <title>支付成功</title>
     <link rel="stylesheet" href="res/weui.css">
     <link rel="stylesheet" href="res/example.css">
 </head>
